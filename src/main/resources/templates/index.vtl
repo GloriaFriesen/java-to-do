@@ -1,6 +1,39 @@
 <!--index.vtl-->
-<h1>Welcome to the To Do List Application</h1>
+<h1>Shane and Gloria's Awesome To-Do List App</h1>
+<h2>Become a master planner</h2>
 
-<a href="/categories">View Category List</a>
-<a href="/categories/new">Add a New Category</a>
+<h3>All Lists</h3>
+#if($categories)
+  <p>Click on a category to see its tasks:</p>
+  <ul>
+    #foreach ($category in $categories)
+      <li><a href="/categories/$category.getId()">$category.getName()</a></li>
+    #end
+  </ul>
+#else
+  <p>There are no categories yet!</p>
+#end
+
+<h3>New Category</h3>
+<form action="/categories" method="post">
+  <label for="name">Category game</label>
+  <input id="name" name="name" type="text">
+  <button type="submit" class="btn btn-success">Add Category</button>
+</form>
+
+<h3>New Task</h3>
+<form action="/tasks" method="post">
+  <label for="categoryId">Select a List</label>
+  <select id='categoryId' name='categoryId' type='text'>
+    #foreach($category in $categories)
+      <option value="$category.getId()">$category.getName()</option>
+    #end
+  </select>
+  <div class="form-group">
+    <label for="description">Description</label>
+    <input id="description" name="description" type="text" class="form-control">
+  </div>
+  <button type="submit" class="btn btn-success">Add Task</button>
+</form>
+
 <!--index.vtl-->
