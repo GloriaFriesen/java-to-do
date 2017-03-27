@@ -7,11 +7,14 @@ public class Task {
   private boolean completed;
   private LocalDateTime createdAt;
   private int id;
+  private int categoryId;
 
-  public Task(String description) {
+  public Task(String description, int categoryId) {
     this.description = description;
     completed = false;
     createdAt = LocalDateTime.now();
+    this.categoryId = categoryId;
+
   }
 
   @Override
@@ -20,7 +23,9 @@ public class Task {
       return false;
     } else {
       Task newTask = (Task) otherTask;
-      return this.getDescription().equals(newTask.getDescription()) && this.getId() == newTask.getId();
+      return this.getDescription().equals(newTask.getDescription()) &&
+             this.getId() == newTask.getId() &&
+             this.getCategoryId() == newTask.getCategoryId();
     }
   }
 
@@ -40,6 +45,10 @@ public class Task {
     return id;
   }
 
+  public int getCategoryId() {
+  return categoryId;
+}
+
   public static Task find(int id) {
     try(Connection con = DB.sql2o.open()) {
       String sql = "SELECT * FROM tasks WHERE id=:id";
@@ -49,16 +58,20 @@ public class Task {
   }
 
   public static List<Task> all() {
-    String sql = "SELECT id, description FROM tasks";
+    String sql = "SELECT id, description, categoryId FROM tasks";
     try(Connection con = DB.sql2o.open()) {
-      return con.createQuery(sql).executeAndFetch(Task.class);
+     return con.createQuery(sql).executeAndFetch(Task.class);
     }
   }
 
-  public void save() {
+  public void saveTask() {
     try(Connection con = DB.sql2o.open()) {
-      String sql = "INSERT INTO tasks (description) VALUES (:description)";
-      this.id = (int) con.createQuery(sql, true).addParameter("description", this.description).executeUpdate().getKey();
-    }
+         String sql = "INSERT INTO tasks(description, categoryId) VALUES (:description, :categoryId)";
+         this.id = (int) con.createQuery(sql, true)
+           .addParameter("description", this.description)
+           .addParameter("categoryId", this.categoryId)
+           .executeUpdate()
+           .getKey();
+       }
   }
 }

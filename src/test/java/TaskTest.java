@@ -56,48 +56,48 @@ public class TaskTest {
   //
   @Test
   public void getId_tasksInstantiatesWithAnID() {
-    Task myTask = new Task("Mow the lawn");
-    myTask.save();
+    Task myTask = new Task("Mow the lawn", 1);
+    myTask.saveTask();
     assertTrue(myTask.getId() > 0);
   }
 
   @Test
   public void find_returnsTaskWithSameId_secondTask() {
-    Task firstTask = new Task("Mow the Lawn");
-    firstTask.save();
-    Task secondTask = new Task("Buy groceries");
-    secondTask.save();
+    Task firstTask = new Task("Mow the Lawn", 1);
+    firstTask.saveTask();
+    Task secondTask = new Task("Buy groceries", 2);
+    secondTask.saveTask();
     assertEquals(Task.find(secondTask.getId()), secondTask);
   }
 
   @Test
   public void equals_returnsTrueIfDescriptionsAreTheSame() {
-    Task firstTask = new Task("Mow the lawn");
-    Task secondTask = new Task("Mow the lawn");
+    Task firstTask = new Task("Mow the lawn", 1);
+    Task secondTask = new Task("Mow the lawn", 1);
     assertTrue(firstTask.equals(secondTask));
   }
 
   @Test
   public void save_returnsTrueIfDescriptionsAreTheSame() {
-    Task myTask = new Task("Mow the lawn");
-    myTask.save();
+    Task myTask = new Task("Mow the lawn", 1);
+    myTask.saveTask();
     assertTrue(Task.all().get(0).equals(myTask));
   }
 
   @Test
   public void all_returnsAllInstancesOfTask_true() {
-    Task firstTask = new Task("Mow the lawn");
-    firstTask.save();
-    Task secondTask = new Task("Buy groceries");
-    secondTask.save();
+    Task firstTask = new Task("Mow the lawn", 1);
+    firstTask.saveTask();
+    Task secondTask = new Task("Buy groceries", 2);
+    secondTask.saveTask();
     assertEquals(true, Task.all().get(0).equals(firstTask));
     assertEquals(true, Task.all().get(1).equals(secondTask));
   }
 
   @Test
   public void save_assignsIdToObject() {
-    Task myTask = new Task("Mow the lawn");
-    myTask.save();
+    Task myTask = new Task("Mow the lawn", 1);
+    myTask.saveTask();
     Task savedTask = Task.all().get(0);
     assertEquals(myTask.getId(), savedTask.getId());
   }
