@@ -1,37 +1,33 @@
 import java.util.List;
-import java.util.ArrayList;
+import org.sql2o.*;
 
 public class Category {
-  private String mName;
-  private static List<Category> instances = new ArrayList<Category>();
-  private int mId;
-  private List<Task> mTasks;
+  private String name;
+  private int id;
 
   public Category(String name){
-    mName = name;
-    instances.add(this);
-    mId = instances.size();
-    mTasks = new ArrayList<Task>();
+    this.name = name;
   }
   public String getName(){
-    return mName;
+    return name;
   }
   public static List<Category> all(){
-    return instances;
+    String sql = "SELECT id, name FROM categories;";
+    try(Connection con = DB.sql2o.open()) {
+      return con.createQuery(sql).executeAndFetch(Category.class);
+    }
   }
-  public static void clear(){
-    instances.clear();
-  }
+
   public int getId(){
-    return mId;
+    return id;
   }
+
   public static Category find(int id) {
-    return instances.get(id - 1);
+
   }
+
   public List<Task> getTasks() {
-    return mTasks;
+
   }
-  public void addTask(Task task){
-    mTasks.add(task);
-  }
+
 }
