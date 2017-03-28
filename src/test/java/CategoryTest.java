@@ -6,7 +6,7 @@ public class CategoryTest {
 
   @Before
   public void setUp() {
-    DB.sql2o = new Sql2o("jdbc:postgresql://localhost:5432/to_do_ssgf_test", null, null);
+    DB.sql2o = new Sql2o("jdbc:postgresql://localhost:5432/to_do_test", null, null);
   }
 
   @After
@@ -111,5 +111,13 @@ public class CategoryTest {
     myTask.saveTask();
     Task savedTask = Task.find(myTask.getId());
     assertEquals(savedTask.getCategoryId(), myCategory.getId());
+  }
+
+  @Test
+  public void update_updatesCategoryName_true() {
+    Category myCategory = new Category("Home");
+    myCategory.saveCategory();
+    myCategory.update("Work");
+    assertEquals("Work", Category.find(myCategory.getId()).getName());
   }
 }
